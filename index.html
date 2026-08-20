@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Your Friend - Sapna</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3, #dbeafe);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .header h2 {
+            font-size: 18px;
+            color: #1f2937;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #059669;
+        }
+        .status .dot {
+            width: 8px;
+            height: 8px;
+            background: #059669;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #d8b4fe;
+            border-radius: 10px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .message.sapna {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+            color: #1f2937;
+            border-bottom-left-radius: 4px;
+        }
+        .typing {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+            padding: 10px 16px;
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            display: none;
+        }
+        .typing .dots {
+            display: flex;
+            gap: 4px;
+        }
+        .typing .dots span {
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        .typing .dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing .dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #f9fafb;
+            padding: 6px 6px 6px 16px;
+            border-radius: 50px;
+            border: 1px solid #e5e7eb;
+        }
+        .input-area input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            font-size: 14px;
+            outline: none;
+        }
+        .input-area input::placeholder {
+            color: #9ca3af;
+        }
+        .input-area button {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-area button:hover {
+            transform: scale(1.05);
+        }
+        .input-area button:active {
+            transform: scale(0.95);
+        }
+        .quick-replies {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .quick-replies button {
+            padding: 6px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            background: white;
+            font-size: 12px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-replies button:hover {
+            background: #f3e8ff;
+            border-color: #8b5cf6;
+        }
+        .info {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        .info span {
+            color: #8b5cf6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="avatar">🌸</div>
+            <div>
+                <h2>Meet Your Friend</h2>
+                <div class="status">
+                    <span class="dot"></span>
+                    Sapna is active
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Box -->
+        <div class="chat-box" id="chatBox"></div>
+
+        <!-- Typing Indicator -->
+        <div class="typing" id="typing">
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+
+        <!-- Quick Replies -->
+        <div class="quick-replies">
+            <button onclick="quickSend('Hi Sapna!')">👋 Hi!</button>
+            <button onclick="quickSend('Kaisi ho?')">😊 Kaisi ho?</button>
+            <button onclick="quickSend('Kya kar rahi ho?')">🤔 Kya kar rahi ho?</button>
+            <button onclick="quickSend('Tum kaha rehti ho?')">🏠 Kaha rehti ho?</button>
+        </div>
+
+        <div class="info">💬 <span>Sapna</span> is always here to listen</div>
+    </div>
+
+    <script>
+        // Sapna's Responses
+        const sapnaResponses = {
+            'hi': ['Hii! 😄 Kya haal hai?', 'Hii ji! 😊 Kese ho?', 'Hellow! 🌸 Kya chal raha?'],
+            'hello': ['Hii! 😄 Kya haal hai?', 'Hii ji! 😊 Kese ho?', 'Hellow! 🌸 Kya chal raha?'],
+            'kaisi ho': ['Main mast hu 😄 Tum batao?', 'Bilkul thik hu! 😊 Tum sunao?', 'Mast mast! 💃 Tum kese ho?'],
+            'kya kar rahi ho': ['Bas chill kar rahi hu 😌 Tum batao?', 'Chai pee rahi hu aur baatein kar rahi ☕', 'Kuch nahi bas tumhara wait kar rahi thi 😄'],
+            'kya kar rahe ho': ['Bas chill kar rahi hu 😌 Tum batao?', 'Chai pee rahi hu aur baatein kar rahi ☕', 'Kuch nahi bas tumhara wait kar rahi thi 😄'],
+            'kaha rehti ho': ['Morena mein rehti hu 😊 MP!', 'Morena, Madhya Pradesh 🏠', 'Morena mein! Aao kabhi 😄'],
+            'name': ['Naam Sapna hai 😄', 'Mera naam Sapna! 🌸', 'Sapna! Yaad rakhna 😊'],
+            'favorite color': ['Blue 💙 Bahut pasand hai!', 'Blue 💙 Bas yahi favorite!', 'Blue 💙 Kya tumko bhi pasand hai?'],
+            'favorite food': ['Pani Puri 🤤 Bahut tasty!', 'Pani Puri 🥰 Favorite hai!', 'Pani Puri - 10 plate kha sakti hu 😂'],
+            'mood kharab': ['Arey 😕 Kya hua? Batao na?', 'Kya baat hai? 😟 Main hoon na!', 'Kyun? 🥺 Kuch hua kya?'],
+            'ignore': ['Nahi yaar 😭 Bilkul nahi!', 'Aisa kabhi nahi 😢 Tum important ho!', 'Kyun ignore karu? 😤 Tum toh mere dost ho!'],
+            'good morning': ['Good morning! 🌅 Kaisi neend aayi?', 'Morning! 🌞 Sapna here!', 'Good morning dost! ☀️'],
+            'good night': ['Good night! 🌙 Sapnon mein milenge 😄', 'Night night! 😴 Kal baat karenge!', 'Good night! 💫 Sapna always with you!'],
+            'birthday': ['Mera birthday 15 August ko hai 🎂', '15 August 🎉 Independence Day + Birthday!', '15 August ko! Celebration 💃'],
+            'hobby': ['Music sunna aur doston se baatein karna 🎵', 'Gaane sunna aur movies dekhna 🎬', 'Chai peena aur ghumna ☕'],
+            'pet': ['Pari hai meri doggy 🐕 Bahut pyaari!', 'Pari ❤️ Meri best friend!', 'Pari - meri baby 🐕'],
+            'movie': ['3 Idiots 🎬 Best movie ever!', '3 Idiots dekhna - bahut hasi aati hai 😂', '3 Idiots! Kya movie hai yaar!'],
+        };
+
+        const defaultResponses = [
+            'Haan ji 😊 Batao kya?',
+            'Sahi kaha! 💯 Aage batao?',
+            'Mujhe bhi aisa lagta hai 😄',
+            'Arey wah! 🎉 Kya baat hai?',
+            'Chinta mat karo 😌 Main hoon!',
+            'Main hoon na yahan! 💪',
+            'Hmm 🤔 Kuch aur batao?',
+            'Waah! 😍 Kya baat kar rahe ho?',
+            'Sapna hoon! 😄 Always here!',
+            'Bilkul! 💯 Tum sahi ho!'
+        ];
+
+        let chatBox = document.getElementById('chatBox');
+        let input = document.getElementById('messageInput');
+        let typing = document.getElementById('typing');
+
+        // Add welcome message
+        setTimeout(() => {
+            addMessage('sapna', 'Hii! 😄 Main Sapna hoon. Kaise ho aap?');
+        }, 500);
+
+        function addMessage(sender, text) {
+            let div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.textContent = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getResponse(text) {
+            let lower = text.toLowerCase();
+            
+            // Check each keyword
+            for (let [key, responses] of Object.entries(sapnaResponses)) {
+                if (lower.includes(key)) {
+                    return responses[Math.floor(Math.random() * responses.length)];
+                }
+            }
+            
+            // Default random response
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function sendMessage() {
+            let text = input.value.trim();
+            if (!text) return;
+            
+            addMessage('user', text);
+            input.value = '';
+            
+            typing.style.display = 'block';
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            setTimeout(() => {
+                typing.style.display = 'none';
+                let reply = getResponse(text);
+                addMessage('sapna', reply);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function quickSend(text) {
+            input.value = text;
+            sendMessage();
+        }
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
