@@ -3,102 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meet Your Friend - Sapna</title>
+    <title>Meet Your Friend - Sapna 💕</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f3e8ff, #fce7f3, #dbeafe); min-height: 100vh; }
-        .glass { background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
-        .chat-bubble-sapna { background: linear-gradient(135deg, #f3e8ff, #fce7f3); border-bottom-left-radius: 4px; }
-        .chat-bubble-user { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; border-bottom-right-radius: 4px; }
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            color: white;
+            transition: background 0.5s;
+        }
+        body.light-mode {
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3, #dbeafe);
+            color: #1f2937;
+        }
+        body.light-mode .glass { background: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.3); }
+        body.light-mode .glass-dark { background: rgba(255,255,255,0.6); }
+        body.light-mode .daily-question { background: rgba(102,126,234,0.1); border-color: rgba(102,126,234,0.2); }
+        body.light-mode input { color: #1f2937; }
+        body.light-mode .nav-btn { color: #4b5563; }
+        body.light-mode .nav-btn.active { color: white; }
+        .glass { 
+            background: rgba(255,255,255,0.08); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .glass-dark {
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .chat-bubble-sapna { 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            border-bottom-left-radius: 4px; 
+        }
+        .chat-bubble-user { 
+            background: linear-gradient(135deg, #f093fb, #f5576c); 
+            color: white; 
+            border-bottom-right-radius: 4px; 
+        }
+        .chat-bubble-sapna.light { background: linear-gradient(135deg, #e0e7ff, #f3e8ff); color: #1f2937; }
+        .glow-text { text-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+        .xp-bar { background: linear-gradient(90deg, #f093fb, #f5576c, #4facfe); height: 4px; border-radius: 2px; transition: width 0.5s; }
+        .streak-fire { animation: flame 1.5s infinite; }
+        @keyframes flame { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .level-badge { background: linear-gradient(135deg, #f093fb, #f5576c); padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .mood-indicator { transition: all 0.5s; }
         .typing-dots span { animation: bounce 1.4s infinite; display: inline-block; width: 8px; height: 8px; background: #a78bfa; border-radius: 50%; margin: 0 2px; }
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
         .photo-card { aspect-ratio: 1; border-radius: 16px; overflow: hidden; position: relative; transition: transform 0.3s; cursor: pointer; }
-        .photo-card:hover { transform: scale(1.03); }
+        .photo-card:hover { transform: scale(1.05); }
         .photo-card img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-card .delete-btn { position: absolute; top: 8px; right: 8px; background: rgba(239,68,68,0.9); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; opacity: 0; transition: opacity 0.3s; font-size: 14px; }
+        .photo-card .delete-btn { position: absolute; top: 6px; right: 6px; background: rgba(239,68,68,0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; opacity: 0; transition: opacity 0.3s; font-size: 12px; }
         .photo-card:hover .delete-btn { opacity: 1; }
-        .nav-btn { transition: all 0.3s; padding: 10px 20px; border-radius: 16px; cursor: pointer; }
-        .nav-btn.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; box-shadow: 0 10px 25px -5px rgba(139,92,246,0.4); }
-        .nav-btn:not(.active) { background: rgba(255,255,255,0.5); color: #4b5563; }
-        .nav-btn:not(.active):hover { background: rgba(255,255,255,0.8); }
-        .preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .nav-btn { transition: all 0.3s; padding: 10px 16px; border-radius: 16px; cursor: pointer; background: rgba(255,255,255,0.05); color: #a0aec0; }
+        .nav-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; box-shadow: 0 10px 25px -5px rgba(102,126,234,0.4); }
+        .nav-btn:not(.active):hover { background: rgba(255,255,255,0.1); }
+        .preview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .preview-overlay img { max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 12px; }
         .preview-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; background: rgba(0,0,0,0.5); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; }
         .preview-close:hover { background: rgba(0,0,0,0.8); }
         .page { display: none; }
         .page.active { display: block; }
-        .emoji-btn { font-size: 20px; padding: 8px; cursor: pointer; background: none; border: none; border-radius: 50%; transition: background 0.2s; }
-        .emoji-btn:hover { background: rgba(0,0,0,0.05); }
-        .emoji-picker { position: absolute; bottom: 70px; right: 0; z-index: 100; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); padding: 12px; max-width: 300px; display: none; }
+        .emoji-btn { font-size: 20px; padding: 8px; cursor: pointer; background: none; border: none; border-radius: 50%; transition: background 0.2s; color: white; }
+        .emoji-btn:hover { background: rgba(255,255,255,0.1); }
+        .emoji-picker { position: absolute; bottom: 70px; right: 0; z-index: 100; background: #1a1a2e; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); padding: 12px; max-width: 300px; display: none; border: 1px solid rgba(255,255,255,0.1); }
         .emoji-picker.show { display: block; }
         .emoji-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         .emoji-grid button { font-size: 24px; padding: 4px; border: none; background: none; cursor: pointer; border-radius: 8px; transition: background 0.2s; }
-        .emoji-grid button:hover { background: #f3f4f6; }
+        .emoji-grid button:hover { background: rgba(255,255,255,0.1); }
+        .daily-question {
+            background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+            border: 1px solid rgba(102,126,234,0.3);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            animation: glowPulse 2s infinite;
+        }
+        @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(102,126,234,0.1); } 50% { box-shadow: 0 0 40px rgba(102,126,234,0.3); } }
+        .streak-badge { background: linear-gradient(135deg, #f093fb, #f5576c); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; }
+        .level-progress { background: rgba(255,255,255,0.1); border-radius: 10px; height: 6px; overflow: hidden; }
+        .level-progress-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #f093fb, #f5576c, #4facfe); transition: width 0.5s; }
+        .notification-bubble {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 12px 20px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 999;
+            animation: slideIn 0.5s ease;
+            max-width: 300px;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .theme-toggle { cursor: pointer; padding: 8px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: background 0.3s; }
+        .theme-toggle:hover { background: rgba(255,255,255,0.2); }
+        .voice-btn { transition: all 0.3s; }
+        .voice-btn.recording { animation: pulseRed 1s infinite; background: #ef4444 !important; }
+        @keyframes pulseRed { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .suggestion-chip { 
+            padding: 4px 12px; 
+            background: rgba(255,255,255,0.08); 
+            border-radius: 20px; 
+            font-size: 11px; 
+            cursor: pointer; 
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .suggestion-chip:hover { background: rgba(102,126,234,0.3); border-color: rgba(102,126,234,0.5); transform: scale(1.05); }
+        .memory-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 10px; transition: all 0.3s; }
+        .memory-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
         @media (max-width: 640px) {
-            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
-            .container { padding: 12px !important; }
-            .nav-btn { padding: 8px 14px; font-size: 14px; }
+            .photo-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+            .container { padding: 10px !important; }
+            .nav-btn { padding: 8px 12px; font-size: 13px; }
+            .suggestion-chip { font-size: 10px; padding: 3px 10px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container max-w-4xl mx-auto p-4 min-h-screen">
+    
     <!-- Header -->
-    <div class="glass rounded-3xl p-6 mb-4 shadow-xl">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-2xl font-bold text-white">🌸</div>
+    <div class="glass rounded-3xl p-5 mb-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-2xl font-bold">🌸</div>
                 <div>
-                    <h1 class="text-xl font-bold text-gray-800">Meet Your Friend</h1>
-                    <div class="flex items-center gap-2 text-sm text-green-600">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        Sapna is active
+                    <h1 class="text-lg font-bold">Meet Your Friend</h1>
+                    <div class="flex items-center gap-3 text-xs flex-wrap">
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                            Sapna <span id="moodDisplay" class="text-purple-300">😊</span>
+                        </span>
+                        <span class="level-badge" id="levelDisplay">Level 1</span>
+                        <span class="streak-badge">🔥 <span id="streakDisplay">0</span> Day</span>
+                        <span class="level-badge" id="languageDisplay">🌍 EN/HI</span>
                     </div>
                 </div>
             </div>
-            <button onclick="resetChat()" class="text-sm text-gray-500 hover:text-gray-700 bg-gray-100 px-3 py-1 rounded-full">Reset Chat</button>
+            <div class="flex items-center gap-2">
+                <div class="text-right hidden sm:block">
+                    <div class="text-sm font-semibold" id="xpDisplay">0 XP</div>
+                    <div class="level-progress w-24">
+                        <div class="level-progress-fill" id="xpProgress" style="width:0%"></div>
+                    </div>
+                </div>
+                <button onclick="toggleTheme()" class="theme-toggle text-lg" title="Toggle Theme">🌓</button>
+            </div>
         </div>
     </div>
 
     <!-- Navigation -->
-    <div class="flex gap-2 mb-4">
-        <button onclick="showPage('chat')" id="navChat" class="nav-btn active flex-1 text-center">💬 Chat</button>
-        <button onclick="showPage('photos')" id="navPhotos" class="nav-btn flex-1 text-center">📸 Photos</button>
+    <div class="flex gap-2 mb-4 overflow-x-auto">
+        <button onclick="showPage('chat')" id="navChat" class="nav-btn active flex-1 text-center text-sm">💬 Chat</button>
+        <button onclick="showPage('photos')" id="navPhotos" class="nav-btn flex-1 text-center text-sm">📸 Memories</button>
+        <button onclick="showPage('stats')" id="navStats" class="nav-btn flex-1 text-center text-sm">🏆 Stats</button>
+        <button onclick="showPage('memory')" id="navMemory" class="nav-btn flex-1 text-center text-sm">🧠 Sapna's Memory</button>
     </div>
 
     <!-- Chat Page -->
     <div id="chatPage" class="page active">
         <div class="glass rounded-3xl p-4 shadow-xl">
+            <!-- Daily Question -->
+            <div class="daily-question flex items-center gap-3">
+                <span class="text-2xl">❓</span>
+                <div>
+                    <div class="text-xs text-purple-300">Today's Question</div>
+                    <div class="text-sm font-medium" id="dailyQuestion">Loading...</div>
+                </div>
+            </div>
+
             <!-- Chat Box -->
-            <div id="chatBox" class="h-[420px] overflow-y-auto space-y-3 mb-4 px-2" style="scroll-behavior: smooth;">
+            <div id="chatBox" class="h-[350px] overflow-y-auto space-y-3 mb-3 px-2" style="scroll-behavior: smooth;">
                 <!-- Messages will appear here -->
             </div>
 
             <!-- Typing Indicator -->
-            <div id="typingIndicator" class="flex items-center gap-3 text-gray-500 text-sm mb-3 hidden">
+            <div id="typingIndicator" class="flex items-center gap-3 text-gray-400 text-sm mb-3 hidden">
                 <div class="typing-dots"><span></span><span></span><span></span></div>
-                <span>Sapna is typing...</span>
+                <span>Sapna is thinking...</span>
             </div>
 
             <!-- Input -->
-            <div class="flex gap-2 items-center bg-gray-50 rounded-2xl p-2 border border-gray-200">
+            <div class="flex gap-2 items-center bg-black/20 rounded-2xl p-2 border border-white/10">
                 <button onclick="toggleEmoji()" class="emoji-btn text-xl">😊</button>
-                <input id="messageInput" type="text" placeholder="Type a message..." class="flex-1 bg-transparent border-0 outline-none text-sm p-2">
+                <button onclick="toggleVoice()" class="emoji-btn text-xl voice-btn" id="voiceBtn" title="Voice Message">🎤</button>
+                <input id="messageInput" type="text" placeholder="Type a message..." class="flex-1 bg-transparent border-0 outline-none text-sm p-2 text-white placeholder-gray-400">
                 <button onclick="sendMessage()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-4 py-2 text-sm font-semibold hover:shadow-lg transition">Send</button>
             </div>
 
-            <!-- Quick Replies -->
-            <div class="flex gap-2 flex-wrap mt-3">
-                <button onclick="quickSend('Hi Sapna!')" class="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm hover:border-purple-400 transition">👋 Hi!</button>
-                <button onclick="quickSend('Kaisi ho?')" class="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm hover:border-purple-400 transition">😊 Kaisi ho?</button>
-                <button onclick="quickSend('Kya kar rahi ho?')" class="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm hover:border-purple-400 transition">🤔 Kya kar rahi ho?</button>
-                <button onclick="quickSend('Mera mood kharab hai')" class="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm hover:border-purple-400 transition">😔 Mood kharab</button>
-                <button onclick="quickSend('Tell me a joke')" class="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm hover:border-purple-400 transition">😂 Joke</button>
+            <!-- Smart Suggestions -->
+            <div class="flex gap-2 flex-wrap mt-3" id="suggestionContainer">
+                <span class="suggestion-chip" onclick="quickSend('Tell me something interesting')">✨ Interesting</span>
+                <span class="suggestion-chip" onclick="quickSend('Mera mood kharab hai')">😔 Sad</span>
+                <span class="suggestion-chip" onclick="quickSend('Joke sunao')">😂 Joke</span>
+                <span class="suggestion-chip" onclick="quickSend('Kya chal raha hai?')">🤔 What's up?</span>
+                <span class="suggestion-chip" onclick="quickSend('Sapna, tell me about yourself')">🌸 About Sapna</span>
+                <span class="suggestion-chip" onclick="quickSend('Latest news?')">📰 News</span>
             </div>
 
             <!-- Emoji Picker -->
@@ -118,6 +227,10 @@
                     <button onclick="addEmoji('🤗')">🤗</button>
                     <button onclick="addEmoji('😎')">😎</button>
                     <button onclick="addEmoji('🥰')">🥰</button>
+                    <button onclick="addEmoji('✨')">✨</button>
+                    <button onclick="addEmoji('💀')">💀</button>
+                    <button onclick="addEmoji('👀')">👀</button>
+                    <button onclick="addEmoji('🙏')">🙏</button>
                 </div>
             </div>
         </div>
@@ -126,26 +239,93 @@
     <!-- Photos Page -->
     <div id="photosPage" class="page">
         <div class="glass rounded-3xl p-4 shadow-xl">
-            <!-- Upload -->
-            <div class="flex gap-3 items-center mb-4">
-                <label class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-4 py-3 text-center cursor-pointer hover:shadow-lg transition">
-                    📸 Add Photo
+            <div class="flex gap-3 items-center mb-4 flex-wrap">
+                <label class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-4 py-3 text-center cursor-pointer hover:shadow-lg transition text-sm min-w-[120px]">
+                    📸 Add Memory
                     <input type="file" accept="image/*" onchange="addPhoto(event)" class="hidden">
                 </label>
-                <span id="photoCount" class="text-sm text-gray-500">0 photos</span>
+                <span id="photoCount" class="text-sm text-gray-400">0 photos</span>
             </div>
 
-            <!-- Photo Grid -->
-            <div id="photoGrid" class="photo-grid">
-                <!-- Photos will appear here -->
-            </div>
+            <div id="photoGrid" class="photo-grid"></div>
 
-            <!-- Empty State -->
             <div id="emptyState" class="text-center py-16">
                 <div class="text-6xl mb-4">🖼️</div>
-                <h3 class="text-xl text-gray-600">No photos yet</h3>
-                <p class="text-gray-400">Add your memories with Sapna!</p>
+                <h3 class="text-xl text-gray-300">No memories yet</h3>
+                <p class="text-gray-500 text-sm">Share your moments with Sapna!</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Stats Page -->
+    <div id="statsPage" class="page">
+        <div class="glass rounded-3xl p-5 shadow-xl">
+            <h2 class="text-xl font-bold mb-4">🏆 Your Achievements</h2>
+            
+            <div class="space-y-3">
+                <div class="flex items-center justify-between bg-white/5 rounded-xl p-3">
+                    <span>🔥 <span id="streakDisplay2">0</span> Day Streak</span>
+                    <span id="streakEmoji" class="text-2xl">😴</span>
+                </div>
+                <div class="flex items-center justify-between bg-white/5 rounded-xl p-3">
+                    <span>⭐ Level <span id="levelDisplay2">1</span></span>
+                    <span class="text-sm text-gray-400"><span id="xpDisplay2">0</span> XP</span>
+                </div>
+                <div class="flex items-center justify-between bg-white/5 rounded-xl p-3">
+                    <span>💬 <span id="messageCount">0</span> Messages</span>
+                    <span class="text-2xl">💬</span>
+                </div>
+                <div class="flex items-center justify-between bg-white/5 rounded-xl p-3">
+                    <span>📸 <span id="photoCount2">0</span> Photos</span>
+                    <span class="text-2xl">📸</span>
+                </div>
+                <div class="flex items-center justify-between bg-white/5 rounded-xl p-3">
+                    <span>🎯 <span id="achievementCount">0</span> Achievements</span>
+                    <span class="text-2xl">🏆</span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h3 class="text-sm font-semibold text-gray-400 mb-2">🎯 Achievements</h3>
+                <div id="achievementsList" class="space-y-2 max-h-60 overflow-y-auto">
+                    <div class="flex items-center gap-2 text-sm bg-white/5 rounded-lg p-2">
+                        <span>🏆</span> <span>First Chat</span> <span class="ml-auto text-green-400">✅</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memory Page -->
+    <div id="memoryPage" class="page">
+        <div class="glass rounded-3xl p-5 shadow-xl">
+            <h2 class="text-xl font-bold mb-4">🧠 Sapna's Memory</h2>
+            <p class="text-sm text-gray-400 mb-4">Sapna remembers everything about you!</p>
+            
+            <div class="space-y-3" id="memoryContainer">
+                <div class="memory-card">
+                    <div class="text-xs text-purple-300">Your Name</div>
+                    <div id="userName" class="text-sm">Not set yet</div>
+                </div>
+                <div class="memory-card">
+                    <div class="text-xs text-purple-300">Your Favorite Thing</div>
+                    <div id="userFavorite" class="text-sm">Not set yet</div>
+                </div>
+                <div class="memory-card">
+                    <div class="text-xs text-purple-300">Last Conversation</div>
+                    <div id="lastConversation" class="text-sm">No conversation yet</div>
+                </div>
+                <div class="memory-card">
+                    <div class="text-xs text-purple-300">Mood Today</div>
+                    <div id="todayMood" class="text-sm">😊 Happy</div>
+                </div>
+                <div class="memory-card">
+                    <div class="text-xs text-purple-300">Total Time Spent</div>
+                    <div id="totalTime" class="text-sm">0 minutes</div>
+                </div>
+            </div>
+
+            <button onclick="clearMemory()" class="mt-4 text-sm text-red-400 hover:text-red-300 transition">🗑️ Clear Memory</button>
         </div>
     </div>
 </div>
@@ -157,10 +337,10 @@
 </div>
 
 <script>
-// ==================== CHAT SYSTEM ====================
+// ==================== ADVANCED AI KNOWLEDGE BASE ====================
 
-// Sapna's complete personality and knowledge
 const sapnaKnowledge = {
+    // Personal Info
     name: "Sapna",
     city: "Morena",
     state: "Madhya Pradesh",
@@ -168,163 +348,328 @@ const sapnaKnowledge = {
     favoriteFood: "Pani Puri",
     hobbies: ["Listening to music", "Talking with friends", "Watching movies"],
     favoriteMusic: "Bollywood and Punjabi songs",
-    dailyRoutine: "Chai peena, kaam karna, aur doston se baat karna",
     birthday: "15th August",
     petName: "Pari (her dog)",
-    favoriteMovie: "3 Idiots"
+    favoriteMovie: "3 Idiots",
+    dream: "Make everyone around her happy",
+    skills: ["Good listener", "Friendly", "Supportive", "Funny"]
 };
 
-// Intelligence - Answers general knowledge questions
-function getGeneralKnowledge(question) {
-    const q = question.toLowerCase();
+// ==================== MEGA KNOWLEDGE BASE ====================
+
+const knowledgeBase = {
+    // SCIENCE
+    'water|pani|h2o': 'H2O - Pani ka formula hai! 💧 Science ka basic!',
+    'oxygen|o2': 'O2 - Oxygen ka formula hai! 🌬️ Breathing ke liye zaroori!',
+    'carbon dioxide|co2': 'CO2 - Carbon Dioxide! Plants isko pasand karte hain 🌱',
+    'gravity|gravitation': 'Newton ne gravity discover ki thi! 🍎 Jab apple gira!',
+    'earth|prithvi|planet': 'Earth - hamara ghar hai! 🌍 Third planet from Sun!',
+    'sun|suraj|solar': 'Sun hamara star hai! ☀️ Bahut garam aur bright!',
+    'moon|chand|satellite': 'Moon Earth ki satellite hai! 🌙 Chanda mama!',
+    'python|programming|code': 'Python ek powerful programming language hai 🐍',
+    'java|javascript|programming': 'Java ek popular programming language hai ☕ JavaScript alag hai!',
+    'ai|artificial intelligence|chatgpt': 'AI - Artificial Intelligence! 🤖 Machines ko smart banana!',
+    'machine learning|ml': 'Machine Learning - AI ka ek part! 📊 Data se seekhta hai!',
+    'data science|analytics': 'Data Science - Data se insights nikalna! 📈',
+    'physics|physic': 'Physics - Universe ke rules! ⚛️ F=ma, E=mc²',
+    'chemistry|chem': 'Chemistry - Matter ke baare mein! 🧪 Atoms aur molecules!',
+    'biology|bio|life': 'Biology - Life science! 🧬 Plants, animals, humans!',
     
-    // Science
-    if (q.includes('water') || q.includes('pani')) return "H2O - Pani ka formula hai! 💧";
-    if (q.includes('oxygen') || q.includes('oxygen')) return "O2 - Oxygen ka formula hai! 🌬️";
-    if (q.includes('gravity') || q.includes('gravitation')) return "Newton ne gravity discover ki thi 🍎";
+    // GEOGRAPHY
+    'india capital|new delhi|delhi': 'New Delhi 🇮🇳 India ki capital hai!',
+    'usa capital|america capital|washington': 'Washington D.C. 🇺🇸 America ki capital!',
+    'uk capital|england capital|london': 'London 🇬🇧 UK ki capital hai!',
+    'russia capital|moscow': 'Moscow 🇷🇺 Russia ki capital!',
+    'china capital|beijing': 'Beijing 🇨🇳 China ki capital!',
+    'australia capital|canberra': 'Canberra 🇦🇺 Australia ki capital!',
+    'longest river|nile|amazon': 'Nile River 🌊 World ki longest river hai! Amazon second!',
+    'highest mountain|everest|mount everest': 'Mount Everest 🏔️ 8848 meters! World ki highest!',
+    'deepest ocean|pacific|mariana': 'Pacific Ocean 🌊 World ka deepest ocean! Mariana Trench!',
+    'largest desert|sahara': 'Sahara Desert 🏜️ World ki largest hot desert!',
+    'smallest country|vatican': 'Vatican City 🇻🇦 World ka smallest country!',
     
-    // Geography
-    if (q.includes('capital') || q.includes('rajdhani')) {
-        if (q.includes('india')) return "New Delhi 🇮🇳";
-        if (q.includes('usa') || q.includes('america')) return "Washington D.C. 🇺🇸";
-        if (q.includes('uk') || q.includes('england')) return "London 🇬🇧";
-        return "Kis desh ki capital puch rahe ho? 🤔";
-    }
-    if (q.includes('longest river') || q.includes('badhi nadi')) return "World mein Nile river sabse lambi hai! 🌊";
-    if (q.includes('highest mountain') || q.includes('uncha pahad')) return "Mount Everest! 🏔️ 8848 meters";
+    // HISTORY
+    'india independence|15 august': 'India 🇮🇳 15 August 1947 ko independent hua!',
+    'india republic day|26 january': 'India 🇮🇳 26 January 1950 ko Republic bana!',
+    'world war|ww1|ww2': 'World War I & II - 20th century ki major wars! 🌍',
+    'gandhi|mahatma|bapu': 'Mahatma Gandhi 🇮🇳 Father of India! Peace and non-violence!',
+    'nehru|chacha|first pm': 'Jawaharlal Nehru 🇮🇳 India ka first PM!',
+    'ashoka|maurya|emperor': 'Ashoka The Great 👑 Mauryan emperor! Buddhism spread!',
+    'mughal|akbar|shah jahan': 'Mughal Empire 🕌 Akbar, Shah Jahan, Taj Mahal!',
+    'british rule|colonial|east india': 'British rule 🇬🇧 India pe 200 years! 1947 mein azaadi!',
     
-    // History
-    if (q.includes('independence') || q.includes('azadi')) {
-        if (q.includes('india')) return "India 15 August 1947 ko independent hua 🇮🇳";
-        return "Kis country ki independence puch rahe ho? 🤔";
-    }
-    if (q.includes('gandhi') || q.includes('mahatma')) return "Mahatma Gandhi - Father of India! 🇮🇳";
+    // TECHNOLOGY
+    'computer|cpu|laptop': 'Computer - Information processing machine! 💻',
+    'internet|web|www': 'Internet - Global network! 🌐 World Wide Web!',
+    'smartphone|android|iphone': 'Smartphone - Pocket computer! 📱 Android vs iOS!',
+    'social media|facebook|instagram|whatsapp': 'Social Media - Connect with friends! 📱 Instagram, Facebook, WhatsApp!',
+    'google|search engine': 'Google - World ka largest search engine! 🔍',
+    'tesla|elon musk|spacex': 'Tesla - Electric cars! 🚗 Elon Musk ki company!',
+    'space|nasa|isro': 'Space exploration! 🚀 NASA, ISRO - Moon, Mars missions!',
+    'electric vehicle|ev': 'Electric Vehicles - Future of transport! 🔋 Tesla, Ola Electric!',
+    'blockchain|bitcoin|crypto': 'Blockchain - Digital currency technology! 💰 Bitcoin, Ethereum!',
     
-    // Technology
-    if (q.includes('python')) return "Python ek programming language hai 🐍";
-    if (q.includes('java')) return "Java ek popular programming language hai ☕";
-    if (q.includes('ai') || q.includes('artificial intelligence')) return "AI - Artificial Intelligence, machines ko smart banana 🤖";
-    if (q.includes('chatgpt') || q.includes('gpt')) return "ChatGPT OpenAI ki creation hai, bahut smart! 🧠";
+    // SPORTS
+    'cricket|india cricket|virat kohli|dhoni': 'Cricket 🏏 India ka favorite sport! Virat, Dhoni legends!',
+    'football|soccer|messi|ronaldo': 'Football ⚽ World ka most popular sport! Messi vs Ronaldo!',
+    'basketball|nba|lebron': 'Basketball 🏀 NBA - LeBron James, Jordan legends!',
+    'tennis|federer|nadal|djokovic': 'Tennis 🎾 Federer, Nadal, Djokovic - Big 3!',
+    'olympics|games|sports': 'Olympics 🏅 World ka biggest sports event! 2024 Paris!',
     
-    // Math
-    if (q.includes('pi')) return "π = 3.14159... infinite hai! 🔢";
-    if (q.includes('square root')) return "√4 = 2, √9 = 3, simple! 😄";
+    // ENTERTAINMENT
+    'bollywood|movie|film|cinema': 'Bollywood 🎬 Hindi film industry! Mumbai mein!',
+    'hollywood|hollywood movie': 'Hollywood 🎬 American film industry! Los Angeles!',
+    'game of thrones|got': 'Game of Thrones 🐉 Epic fantasy series! Dragons, war, politics!',
+    'harry potter|potter|hogwarts': 'Harry Potter ⚡ Magical world! Hogwarts school!',
+    'marvel|avengers|superhero': 'Marvel Universe 💪 Superheroes! Avengers, Spider-Man!',
+    'dc|batman|superman': 'DC Universe 🦸 Batman, Superman, Wonder Woman!',
+    'anime|naruto|dragon ball|one piece': 'Anime 🎌 Japanese animation! Naruto, Dragon Ball Z, One Piece!',
+    'netflix|amazon prime|ott': 'OTT platforms 📺 Netflix, Prime Video, Hotstar - Streaming content!',
     
-    // Space
-    if (q.includes('sun') || q.includes('suraj')) return "Sun hamara star hai, bahut garam! ☀️";
-    if (q.includes('moon') || q.includes('chand')) return "Moon Earth ki satellite hai 🌙";
-    if (q.includes('earth') || q.includes('prithvi')) return "Earth - hamara ghar! 🌍";
+    // POP CULTURE
+    'memes|funny|humor': 'Meme culture 😂 Internet ki language! Funny and relatable!',
+    'tiktok|reels|shorts': 'Short video apps 📱 TikTok, Instagram Reels, YouTube Shorts!',
+    'youtube|youtuber|creator': 'YouTube 📹 Largest video platform! Content creators!',
+    'gaming|esports|streamer': 'Gaming 🎮 Esports, Twitch, YouTube Gaming!',
+    'streaming|netflix|disney': 'Streaming services 📺 Netflix, Disney+, Amazon Prime!',
     
-    // Pop culture
-    if (q.includes('game of thrones')) return "Game of Thrones - epic series! 🐉";
-    if (q.includes('harry potter')) return "Harry Potter - magical world! ⚡";
-    if (q.includes('marvel') || q.includes('avengers')) return "Marvel superheroes! Hulk smash! 💪";
+    // FOOD
+    'pizza|burger|fast food': 'Fast food 🍕 Pizza, Burger - Popular comfort food!',
+    'indian food|curry|biryani': 'Indian food 🇮🇳 Biryani, Curry, Roti - Delicious!',
+    'pani puri|gol gappe|chaat': 'Pani Puri 🤤 India ka famous street food!',
+    'chai|tea|coffee': 'Chai ☕ India ki favorite beverage! Coffee bhi popular!',
+    'sushi|japanese food': 'Sushi 🍣 Japanese food! Rice with fish/seafood!',
+    'dessert|cake|ice cream': 'Dessert 🍰 Cake, Ice cream - Sweet and yummy!',
     
-    return null; // Not in general knowledge
+    // HEALTH & FITNESS
+    'health|fitness|exercise': 'Health & Fitness 💪 Exercise regularly, eat healthy!',
+    'yoga|meditation': 'Yoga 🧘 India ka gift to world! Peace and flexibility!',
+    'mental health|anxiety|stress': 'Mental health matters! 🧠 Take care of your mind!',
+    'diet|nutrition|healthy food': 'Healthy diet! 🥗 Eat fruits, vegetables, stay hydrated!',
+    'sleep|rest|bedtime': 'Sleep 7-8 hours! 😴 Sleep is important for health!',
+    
+    // RELATIONSHIPS
+    'friendship|friend|bff': 'Friendship 🤝 True friends are rare! Stay connected!',
+    'love|crush|relationship': 'Love ❤️ Beautiful thing! Cherish your relationships!',
+    'family|parents|mother|father': 'Family 👨‍👩‍👧‍👦 Love your family! They always support you!',
+    'breakup|heartbreak|sad': 'Breakup 💔 It hurts, but time heals everything! Stay strong!',
+    
+    // GENERAL
+    'news|latest|update': 'Latest news 📰 Check trusted sources! Stay informed!',
+    'weather|rain|sunny': 'Weather 🌤️ Check the weather before going out!',
+    'time|clock|schedule': 'Time ⏰ Time is precious! Use it wisely!',
+    'money|finance|save': 'Money 💰 Save money, invest wisely, be smart with finance!',
+    'school|college|education': 'Education 📚 Study hard, learn new things every day!',
+    'career|job|work': 'Career 💼 Follow your passion! Work hard and succeed!',
+    'travel|vacation|trip': 'Travel ✈️ Explore the world! Every place has a story!',
+    'nature|environment|earth': 'Nature 🌿 Protect the environment! Plant trees, save water!',
+    'science|research|innovation': 'Science 🔬 Innovation drives progress! Keep exploring!',
+    'future|goal|dream': 'Future 🌟 Dream big! Work hard to achieve your goals!'
+};
+
+// ==================== LANGUAGE DETECTION ====================
+
+function detectLanguage(text) {
+    const hindiIndicators = ['hai', 'ho', 'hu', 'aap', 'tum', 'main', 'mein', 'kaise', 'kya', 'kyu', 'kahan', 'kab', 'kaun'];
+    const englishIndicators = ['you', 'are', 'is', 'am', 'what', 'why', 'where', 'when', 'who', 'how'];
+    
+    text = text.toLowerCase();
+    let hindiScore = 0;
+    let englishScore = 0;
+    
+    hindiIndicators.forEach(word => { if (text.includes(word)) hindiScore++; });
+    englishIndicators.forEach(word => { if (text.includes(word)) englishScore++; });
+    
+    if (hindiScore > englishScore) return 'hi';
+    if (englishScore > hindiScore) return 'en';
+    return 'mixed';
 }
 
-// Sapna's personality responses
-function getPersonalityResponse(message) {
-    const q = message.toLowerCase();
+function translateToHinglish(response, language) {
+    if (language === 'en') return response;
     
-    // Character info - only when asked
-    if (q.includes('name') || q.includes('naam')) {
-        return [`Mera naam ${sapnaKnowledge.name} hai 😄`, `Main ${sapnaKnowledge.name} hoon! 🌸`];
-    }
-    if (q.includes('kaha rehti') || q.includes('city') || q.includes('shehar')) {
-        return [`${sapnaKnowledge.city} mein rehti hu 😊 ${sapnaKnowledge.state}!`, `${sapnaKnowledge.city}, ${sapnaKnowledge.state} 🏠`];
-    }
-    if (q.includes('favorite color') || q.includes('pasandida rang') || q.includes('colour')) {
-        return [`${sapnaKnowledge.favoriteColor} 💙 bahut pasand hai!`, `Blue 💙 Bas yahi favorite!`];
-    }
-    if (q.includes('favorite food') || q.includes('pasandida khana')) {
-        return [`${sapnaKnowledge.favoriteFood} 🤤 Bahut tasty!`, `Pani Puri 🥰 Favorite hai!`];
-    }
-    if (q.includes('hobby') || q.includes('pasand')) {
-        return [`Mujhe ${sapnaKnowledge.hobbies.join(' aur ')} pasand hai 😊`, `${sapnaKnowledge.hobbies[0]} aur ${sapnaKnowledge.hobbies[1]}! 🎵`];
-    }
-    if (q.includes('music') || q.includes('gana') || q.includes('song')) {
-        return [`${sapnaKnowledge.favoriteMusic} sunna pasand hai 🎵`, `Punjabi aur Bollywood songs! 🎶`];
-    }
-    if (q.includes('birthday') || q.includes('janamdin')) {
-        return [`Mera birthday ${sapnaKnowledge.birthday} ko hai 🎂`, `15 August! Celebrate karo! 🎉`];
-    }
-    if (q.includes('pet') || q.includes('dog') || q.includes('doggy')) {
-        return [`Meri ${sapnaKnowledge.petName} hai, bahut pyaari 🐕`, `Pari ❤️ Meri best friend!`];
-    }
-    if (q.includes('movie') || q.includes('film')) {
-        return [`${sapnaKnowledge.favoriteMovie} meri favorite film hai 🎬`, `3 Idiots dekhna - bahut hasi aati hai 😂`];
+    // Basic Hinglish translation for common phrases
+    const translations = {
+        'yes': 'haan',
+        'no': 'nahi',
+        'hello': 'namaste',
+        'thank you': 'shukriya',
+        'good': 'accha',
+        'bad': 'bura',
+        'very': 'bahut',
+        'friend': 'dost',
+        'love': 'pyaar',
+        'please': 'meharbani',
+        'sorry': 'maaf karo',
+        'ok': 'theek hai',
+        'okay': 'theek hai',
+        'really': 'sach mein',
+        'awesome': 'mast',
+        'amazing': 'kamaal',
+        'cool': 'cool',
+        'great': 'bahut accha',
+        'nice': 'accha',
+        'beautiful': 'sundar',
+        'handsome': 'khubsurat',
+        'cute': 'pyaara',
+        'funny': 'mazaak',
+        'serious': 'serious',
+        'problem': 'problem',
+        'solution': 'solution',
+        'maybe': 'shayad',
+        'sure': 'pakka',
+        'why': 'kyu',
+        'what': 'kya',
+        'where': 'kahan',
+        'when': 'kab',
+        'who': 'kaun',
+        'how': 'kaise',
+        'so': 'toh',
+        'but': 'lekin',
+        'because': 'kyuki'
+    };
+    
+    let words = response.split(' ');
+    let translated = words.map(word => {
+        let clean = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
+        if (translations[clean]) {
+            let punctuation = word.match(/[^a-zA-Z]/g) || '';
+            return translations[clean] + punctuation.join('');
+        }
+        return word;
+    });
+    
+    return translated.join(' ');
+}
+
+// ==================== SMART RESPONSE ENGINE ====================
+
+function getSmartResponse(msg) {
+    let q = msg.toLowerCase().trim();
+    let language = detectLanguage(msg);
+    
+    // Check knowledge base - exact matches
+    for (let [key, value] of Object.entries(knowledgeBase)) {
+        let keys = key.split('|');
+        if (keys.some(k => q.includes(k))) {
+            let response = value;
+            if (language === 'hi' || language === 'mixed') {
+                response = translateToHinglish(response, 'hi');
+            }
+            return response;
+        }
     }
     
-    // Greetings
-    if (q.includes('hi') || q.includes('hello')) {
-        return [`Hii! 😄 Kya haal hai?`, `Hii ji! 😊 Kese ho?`, `Hellow! 🌸 Kya chal raha?`];
-    }
-    if (q.includes('good morning')) {
-        return [`Good morning! 🌅 Kaisi neend aayi?`, `Morning! 🌞 Sapna here!`];
-    }
-    if (q.includes('good night')) {
-        return [`Good night! 🌙 Sapnon mein milenge 😄`, `Night night! 😴 Kal baat karenge!`];
+    // Check for questions
+    if (q.includes('?')) {
+        let questionWords = ['what', 'why', 'how', 'where', 'when', 'who', 'which', 'is', 'are', 'am', 'does', 'do', 'did', 'kya', 'kyu', 'kaise', 'kahan', 'kab', 'kaun'];
+        let hasQuestion = questionWords.some(w => q.includes(w));
+        
+        if (hasQuestion) {
+            // Check if we have any matching knowledge
+            for (let [key, value] of Object.entries(knowledgeBase)) {
+                let keys = key.split('|');
+                if (keys.some(k => q.includes(k))) {
+                    let response = "Hmm, meri knowledge mein yeh hai: " + value;
+                    if (language === 'hi' || language === 'mixed') {
+                        response = translateToHinglish(response, 'hi');
+                    }
+                    return response;
+                }
+            }
+            return "Hmm 🤔 Interesting question! Main soch rahi hoon... Batao kya janna chahte ho?";
+        }
     }
     
-    // How are you
-    if (q.includes('kaisi ho') || q.includes('how are you')) {
-        return [`Main mast hu 😄 Tum batao?`, `Bilkul thik hu! 😊 Tum sunao?`, `Mast mast! 💃 Tum kese ho?`];
-    }
-    if (q.includes('kya kar rahi') || q.includes('what are you doing')) {
-        return [`Bas chill kar rahi hu 😌 Tum batao?`, `Chai pee rahi hu aur baatein kar rahi ☕`, `Kuch nahi bas tumhara wait kar rahi thi 😄`];
+    // Check for name
+    if (q.includes('your name') || q.includes('tere naam')) {
+        return `Mera naam ${sapnaKnowledge.name} hai 😄 Yaad rakho!`;
     }
     
-    // Emotions
-    if (q.includes('mood kharab') || q.includes('sad') || q.includes('upset')) {
-        return [`Arey 😕 Kya hua? Batao na?`, `Kya baat hai? 😟 Main hoon na!`, `Kyun? 🥺 Kuch hua kya?`];
+    // Check for location
+    if (q.includes('where you live') || q.includes('kahan rehti')) {
+        return `${sapnaKnowledge.city} mein rehti hu 😊 ${sapnaKnowledge.state}!`;
     }
-    if (q.includes('happy') || q.includes('khush')) {
-        return [`Wah! 😄 Bahut accha!`, `Khush ho toh main bhi khush! 🎉`];
+    
+    // Check for age
+    if (q.includes('age') || q.includes('umar')) {
+        return "Hmm, ladki ki age nahi puchte! 😄 Bas itna jano ki main young hoon!";
+    }
+    
+    // Check for greeting
+    if (q.includes('hi') || q.includes('hello') || q.includes('hey')) {
+        let greetings = [
+            "Hii! 😄 Kya haal hai?",
+            "Hii ji! 😊 Kese ho?",
+            "Hellow! 🌸 Kya chal raha?",
+            "Hey yaar! 😄 Kaise ho?"
+        ];
+        let response = greetings[Math.floor(Math.random() * greetings.length)];
+        if (language === 'en') {
+            response = "Hey! 😄 How are you doing?";
+        }
+        return response;
+    }
+    
+    // Check for emotions
+    if (q.includes('sad') || q.includes('mood kharab') || q.includes('depressed')) {
+        return "Arey 😕 Kya hua? Batao na? Main hoon na yahan! 💪";
+    }
+    if (q.includes('happy') || q.includes('good mood')) {
+        return "Wah! 😄 Bahut accha! Khush ho toh main bhi khush! 🎉";
     }
     if (q.includes('miss you') || q.includes('yaad aati')) {
-        return [`Mujhe bhi tumhari yaad aati hai 😊`, `Arey yaar 🥺 Main bhi miss karti hoon!`];
+        return "Mujhe bhi tumhari yaad aati hai 😊 Bahut miss karti hoon!";
     }
-    if (q.includes('love you') || q.includes('i love you')) {
-        return [`Aww 🥰 Love you too yaar!`, `😊 Bahut pyaara ho tum!`];
+    if (q.includes('love you')) {
+        return "Aww 🥰 Love you too yaar! You're the best!";
     }
     
-    // Jokes
+    // Check for jokes
     if (q.includes('joke') || q.includes('mazaak') || q.includes('funny')) {
-        const jokes = [
+        let jokes = [
             "Tomato ne kaha - Main red hoon! 🍅 Kya tum ready ho? 😂",
-            "Why did the scarecrow win an award? Because he was outstanding in his field! 🌾",
+            "Why did the scarecrow win an award? Outstanding in his field! 🌾😂",
             "What do you call a fake noodle? An impasta! 🍝😂",
-            "Math teacher ne kaha - I love you! Student ne kaha - √(-1) = i (imaginary)! 😂"
+            "Math teacher - I love you! Student - √(-1) = i (imaginary)! 😂",
+            "What do you call a bear with no teeth? A gummy bear! 🐻😄",
+            "Why don't scientists trust atoms? Because they make up everything! ⚛️😂"
         ];
-        return [jokes[Math.floor(Math.random() * jokes.length)]];
+        return jokes[Math.floor(Math.random() * jokes.length)];
     }
     
-    // Compliments
+    // Check for compliments
     if (q.includes('beautiful') || q.includes('sundar') || q.includes('pretty')) {
-        return [`Thank you! 🥰 Tum bhi bahut ache ho!`, `Arrey shukriya! 😊 Tumne toh khush kar diya!`];
+        return "Thank you! 🥰 Tum bhi bahut ache ho! Sab beautiful hain!";
     }
     if (q.includes('smart') || q.includes('intelligent')) {
-        return [`Hehe 😄 Thank you!`, `Tum bhi toh smart ho! 💪`];
+        return "Hehe 😄 Thank you! Tum bhi toh smart ho! 💪";
     }
     
-    return null;
-}
-
-// Main response engine
-function getSapnaResponse(message) {
-    // First check general knowledge
-    const knowledge = getGeneralKnowledge(message);
-    if (knowledge) return knowledge;
-    
-    // Then check personality
-    const personality = getPersonalityResponse(message);
-    if (personality) {
-        return personality[Math.floor(Math.random() * personality.length)];
+    // Check for time
+    if (q.includes('time') || q.includes('samay') || q.includes('clock')) {
+        let now = new Date();
+        return `Abhi time hai ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} 🕐`;
     }
     
-    // Fallback responses
-    const fallbacks = [
+    // Check for date
+    if (q.includes('date') || q.includes('tithi')) {
+        let now = new Date();
+        return `Aaj ${now.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()]} ${now.getFullYear()} 📅`;
+    }
+    
+    // Check for weather
+    if (q.includes('weather') || q.includes('mausam')) {
+        return "Weather 😅 Main toh inside hoon! Bahar ka mausam nahi pata! But I hope it's nice! 🌤️";
+    }
+    
+    // Check for about Sapna
+    if (q.includes('about you') || q.includes('tell me about yourself') || q.includes('sapna')) {
+        return `Main ${sapnaKnowledge.name} hoon! 🌸 ${sapnaKnowledge.city} se hoon. Mujhe ${sapnaKnowledge.hobbies.join(' aur ')} pasand hai. Bahut friendly hoon! 😄`;
+    }
+    
+    // Default responses
+    let fallbacks = [
         "Haan ji 😊 Batao kya?",
         "Sahi kaha! 💯 Aage batao?",
         "Mujhe bhi aisa lagta hai 😄",
@@ -333,38 +678,216 @@ function getSapnaResponse(message) {
         "Main hoon na yahan! 💪",
         "Hmm 🤔 Kuch aur batao?",
         "Waah! 😍 Kya baat kar rahe ho?",
-        "Sapna hoon! 😄 Always here!",
         "Bilkul! 💯 Tum sahi ho!",
         "Interesting! 🤔 Batao aur?",
-        "Main toh hoon hi friend 😄",
         "Kya baat hai? Sunao na! 😊",
         "Arey yaar 😅 Mazaak kar rahe ho na?",
-        "Kuch toh gadbad hai 🤔 Batao na!"
+        "Main toh hoon hi friend 😄",
+        "Kuch toh gadbad hai 🤔 Batao na!",
+        "Hmm, samajh gayi! 😊 Aage batao!"
     ];
-    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    let response = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    
+    if (language === 'en') {
+        let enFallbacks = [
+            "Yes 😊 Tell me more?",
+            "You're right! 💯 Go on?",
+            "I think so too 😄",
+            "Wow! 🎉 What's up?",
+            "Don't worry 😌 I'm here!",
+            "I'm here for you! 💪",
+            "Hmm 🤔 Tell me more?",
+            "Wow! 😍 What are you saying?",
+            "Exactly! 💯 You're right!",
+            "Interesting! 🤔 Tell me more?",
+            "What's up? Tell me! 😊",
+            "Haha 😅 Are you joking?",
+            "I'm here, friend! 😄",
+            "Something's up 🤔 Tell me!"
+        ];
+        return enFallbacks[Math.floor(Math.random() * enFallbacks.length)];
+    }
+    
+    return response;
 }
 
-// Chat functionality
+// ==================== USER MEMORY SYSTEM ====================
+
+let userMemory = JSON.parse(localStorage.getItem('sapna_user_memory')) || {
+    name: '',
+    favorite: '',
+    lastMessage: '',
+    mood: '😊',
+    startTime: Date.now(),
+    messageHistory: []
+};
+
+function saveUserMemory() {
+    localStorage.setItem('sapna_user_memory', JSON.stringify(userMemory));
+    updateMemoryDisplay();
+}
+
+function updateMemoryDisplay() {
+    document.getElementById('userName').textContent = userMemory.name || 'Not set yet';
+    document.getElementById('userFavorite').textContent = userMemory.favorite || 'Not set yet';
+    document.getElementById('lastConversation').textContent = userMemory.lastMessage || 'No conversation yet';
+    document.getElementById('todayMood').textContent = userMemory.mood || '😊';
+    let minutes = Math.floor((Date.now() - userMemory.startTime) / 60000);
+    document.getElementById('totalTime').textContent = minutes + ' minutes';
+}
+
+// ==================== GAMIFICATION SYSTEM ====================
+
+let gameState = {
+    streak: parseInt(localStorage.getItem('sapna_streak')) || 0,
+    xp: parseInt(localStorage.getItem('sapna_xp')) || 0,
+    level: parseInt(localStorage.getItem('sapna_level')) || 1,
+    messages: parseInt(localStorage.getItem('sapna_messages')) || 0,
+    photos: parseInt(localStorage.getItem('sapna_photos_count')) || 0,
+    achievements: JSON.parse(localStorage.getItem('sapna_achievements')) || '[]',
+    lastChat: localStorage.getItem('sapna_last_chat') || null,
+    mood: '😊'
+};
+
+function updateGame() {
+    let xpNeeded = gameState.level * 100;
+    let progress = Math.min((gameState.xp % xpNeeded) / xpNeeded * 100, 100);
+    
+    document.getElementById('xpDisplay').textContent = `${gameState.xp} XP`;
+    document.getElementById('xpProgress').style.width = `${progress}%`;
+    document.getElementById('levelDisplay').textContent = `Level ${gameState.level}`;
+    document.getElementById('levelDisplay2').textContent = gameState.level;
+    document.getElementById('xpDisplay2').textContent = gameState.xp;
+    document.getElementById('streakDisplay').textContent = gameState.streak;
+    document.getElementById('streakDisplay2').textContent = gameState.streak;
+    document.getElementById('messageCount').textContent = gameState.messages;
+    document.getElementById('photoCount2').textContent = gameState.photos;
+    document.getElementById('moodDisplay').textContent = gameState.mood;
+    document.getElementById('achievementCount').textContent = gameState.achievements.length;
+    
+    if (gameState.streak >= 30) document.getElementById('streakEmoji').textContent = '👑';
+    else if (gameState.streak >= 7) document.getElementById('streakEmoji').textContent = '🔥';
+    else if (gameState.streak >= 3) document.getElementById('streakEmoji').textContent = '⭐';
+    else document.getElementById('streakEmoji').textContent = '😴';
+    
+    localStorage.setItem('sapna_streak', gameState.streak);
+    localStorage.setItem('sapna_xp', gameState.xp);
+    localStorage.setItem('sapna_level', gameState.level);
+    localStorage.setItem('sapna_messages', gameState.messages);
+    localStorage.setItem('sapna_photos_count', gameState.photos);
+    localStorage.setItem('sapna_achievements', JSON.stringify(gameState.achievements));
+}
+
+function addXP(amount) {
+    gameState.xp += amount;
+    gameState.messages += 1;
+    
+    let xpNeeded = gameState.level * 100;
+    if (gameState.xp >= xpNeeded) {
+        gameState.level++;
+        gameState.xp = 0;
+        showNotification(`🎉 Level Up! You're now Level ${gameState.level}!`);
+        checkAchievements();
+    }
+    
+    updateGame();
+}
+
+function updateStreak() {
+    let today = new Date().toDateString();
+    let lastChat = gameState.lastChat;
+    
+    if (lastChat === today) return;
+    
+    if (lastChat) {
+        let yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        if (lastChat === yesterday.toDateString()) {
+            gameState.streak++;
+            showNotification(`🔥 ${gameState.streak} Day Streak! Keep it up!`);
+        } else {
+            gameState.streak = 0;
+        }
+    } else {
+        gameState.streak = 1;
+        showNotification('🔥 First day! Let\'s build a streak!');
+    }
+    
+    gameState.lastChat = today;
+    localStorage.setItem('sapna_last_chat', today);
+    updateGame();
+    checkAchievements();
+}
+
+function checkAchievements() {
+    let achievements = [];
+    
+    if (gameState.messages >= 1) achievements.push('🏆 First Chat');
+    if (gameState.messages >= 50) achievements.push('💬 Chatty Friend');
+    if (gameState.messages >= 100) achievements.push('🗣️ Best Friend');
+    if (gameState.messages >= 500) achievements.push('👑 Legendary Friend');
+    if (gameState.messages >= 1000) achievements.push('💎 Ultimate Friend');
+    
+    if (gameState.streak >= 3) achievements.push('⭐ 3-Day Streak');
+    if (gameState.streak >= 7) achievements.push('🔥 7-Day Streak');
+    if (gameState.streak >= 30) achievements.push('👑 30-Day Streak');
+    if (gameState.streak >= 100) achievements.push('💀 100-Day Streak');
+    
+    if (gameState.photos >= 1) achievements.push('📸 First Memory');
+    if (gameState.photos >= 10) achievements.push('📸 Photo Lover');
+    if (gameState.photos >= 50) achievements.push('📸 Memory Keeper');
+    if (gameState.photos >= 100) achievements.push('📸 Memory Master');
+    
+    if (gameState.level >= 2) achievements.push('⭐ Level 2');
+    if (gameState.level >= 5) achievements.push('🌟 Level 5');
+    if (gameState.level >= 10) achievements.push('👑 Level 10');
+    if (gameState.level >= 20) achievements.push('💎 Level 20');
+    
+    let newAchievements = achievements.filter(a => !gameState.achievements.includes(a));
+    newAchievements.forEach(a => {
+        gameState.achievements.push(a);
+        showNotification(`🏆 Achievement Unlocked: ${a}!`);
+    });
+    
+    let list = document.getElementById('achievementsList');
+    if (gameState.achievements.length === 0) {
+        list.innerHTML = '<div class="text-sm text-gray-400">No achievements yet. Start chatting!</div>';
+    } else {
+        list.innerHTML = gameState.achievements.map(a => 
+            `<div class="flex items-center gap-2 text-sm bg-white/5 rounded-lg p-2">
+                <span>${a}</span>
+                <span class="ml-auto text-green-400">✅</span>
+            </div>`
+        ).join('');
+    }
+}
+
+// ==================== CHAT FUNCTIONALITY ====================
+
 let chatBox = document.getElementById('chatBox');
 let input = document.getElementById('messageInput');
 let typing = document.getElementById('typingIndicator');
 let emojiPicker = document.getElementById('emojiPicker');
+let isVoiceRecording = false;
 
-// Load chat from localStorage
 function loadChat() {
-    const saved = localStorage.getItem('sapna_chat');
+    let saved = localStorage.getItem('sapna_chat');
     if (saved) {
         chatBox.innerHTML = saved;
     } else {
-        addMessage('sapna', 'Hii! 😄 Main Sapna hoon. Kaise ho aap?');
+        addMessage('sapna', 'Hii! 😄 Main Sapna hoon. Kaise ho aap? Kya help chahiye?');
     }
 }
 
 function addMessage(sender, text) {
     let div = document.createElement('div');
     div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+    let bubbleClass = sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-sapna';
+    if (document.body.classList.contains('light-mode') && sender === 'sapna') {
+        bubbleClass = 'chat-bubble-sapna light';
+    }
     div.innerHTML = `
-        <div class="${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-sapna'} px-4 py-2 rounded-2xl max-w-[80%] text-sm">
+        <div class="${bubbleClass} px-4 py-2 rounded-2xl max-w-[85%] text-sm shadow-sm">
             ${text}
         </div>
     `;
@@ -381,15 +904,45 @@ function sendMessage() {
     input.value = '';
     emojiPicker.classList.remove('show');
     
+    // Save to user memory
+    userMemory.lastMessage = text;
+    userMemory.messageHistory.push(text);
+    if (!userMemory.name) {
+        if (text.toLowerCase().includes('my name is') || text.toLowerCase().includes('i am')) {
+            let nameMatch = text.match(/(?:my name is|i am|i'm)\s+(\w+)/i);
+            if (nameMatch) {
+                userMemory.name = nameMatch[1];
+                showNotification(`🎯 Got it! You're ${userMemory.name}!`);
+            }
+        }
+    }
+    saveUserMemory();
+    
     typing.classList.remove('hidden');
     chatBox.scrollTop = chatBox.scrollHeight;
     
-    // Simulate thinking time (500ms - 2000ms)
-    const thinkingTime = 800 + Math.random() * 1200;
+    let thinkingTime = 800 + Math.random() * 1200;
     setTimeout(() => {
         typing.classList.add('hidden');
-        let reply = getSapnaResponse(text);
+        let reply = getSmartResponse(text);
         addMessage('sapna', reply);
+        
+        // Update streak and XP
+        updateStreak();
+        addXP(10);
+        
+        // Update mood based on message
+        if (text.includes('sad') || text.includes('mood kharab')) {
+            gameState.mood = '😢';
+        } else if (text.includes('happy') || text.includes('good')) {
+            gameState.mood = '😄';
+        } else if (text.includes('love') || text.includes('miss')) {
+            gameState.mood = '🥰';
+        } else {
+            gameState.mood = '😊';
+        }
+        userMemory.mood = gameState.mood;
+        updateGame();
     }, thinkingTime);
 }
 
@@ -399,9 +952,11 @@ function quickSend(text) {
 }
 
 function resetChat() {
-    localStorage.removeItem('sapna_chat');
-    chatBox.innerHTML = '';
-    addMessage('sapna', 'Hii! 😄 Main Sapna hoon. Kaise ho aap?');
+    if (confirm('Clear all chat history?')) {
+        localStorage.removeItem('sapna_chat');
+        chatBox.innerHTML = '';
+        addMessage('sapna', 'Hii! 😄 Fresh start! Kya baat karni hai aapko?');
+    }
 }
 
 function toggleEmoji() {
@@ -412,6 +967,26 @@ function addEmoji(emoji) {
     input.value += emoji;
     input.focus();
     emojiPicker.classList.remove('show');
+}
+
+function toggleVoice() {
+    isVoiceRecording = !isVoiceRecording;
+    let btn = document.getElementById('voiceBtn');
+    if (isVoiceRecording) {
+        btn.classList.add('recording');
+        showNotification('🎤 Recording... Speak now! Tap again to send');
+        setTimeout(() => {
+            if (isVoiceRecording) {
+                isVoiceRecording = false;
+                btn.classList.remove('recording');
+                showNotification('🎤 Voice note sent! (Demo)');
+                input.value = "Hey Sapna! (Voice message)";
+                sendMessage();
+            }
+        }, 3000);
+    } else {
+        btn.classList.remove('recording');
+    }
 }
 
 input.addEventListener('keydown', function(e) {
@@ -444,24 +1019,35 @@ function renderPhotos() {
 }
 
 function addPhoto(event) {
-    const file = event.target.files[0];
+    let file = event.target.files[0];
     if (!file) return;
     
-    const reader = new FileReader();
+    if (file.size > 10 * 1024 * 1024) {
+        showNotification('❌ Image too large! Max 10MB');
+        return;
+    }
+    
+    let reader = new FileReader();
     reader.onload = function(e) {
         photos.push(e.target.result);
         localStorage.setItem('sapna_photos', JSON.stringify(photos));
         renderPhotos();
+        gameState.photos += 1;
+        updateGame();
+        checkAchievements();
+        showNotification('📸 Photo added! +25 XP');
+        addXP(25);
     };
     reader.readAsDataURL(file);
     event.target.value = '';
 }
 
 function deletePhoto(index) {
-    if (confirm('Delete this photo?')) {
+    if (confirm('Delete this memory?')) {
         photos.splice(index, 1);
         localStorage.setItem('sapna_photos', JSON.stringify(photos));
         renderPhotos();
+        showNotification('🗑️ Photo deleted');
     }
 }
 
@@ -483,10 +1069,132 @@ function showPage(page) {
     document.getElementById('nav' + page.charAt(0).toUpperCase() + page.slice(1)).classList.add('active');
 }
 
+// ==================== THEME ====================
+
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('sapna_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+}
+
+function loadTheme() {
+    if (localStorage.getItem('sapna_theme') === 'light') {
+        document.body.classList.add('light-mode');
+    }
+}
+
+// ==================== DAILY QUESTION ====================
+
+const dailyQuestions = [
+    "Aaj kya special kiya? 🌟",
+    "Koi naya sapna aaya? 💭",
+    "Aaj ka best moment kya tha? ✨",
+    "Kiski yaad aa rahi hai? 💕",
+    "Aaj kya seekha? 📚",
+    "Kya plan hai aaj ka? 📝",
+    "Kaun hai aapka best friend? 👫",
+    "Favorite memory kya hai? 🎀",
+    "Kya aaj koi funny hua? 😂",
+    "Life ka goal kya hai? 🎯",
+    "Khushi kya hai aapke liye? 😊",
+    "Next vacation plan? ✈️",
+    "Favorite movie? 🎬",
+    "Favorite song? 🎵",
+    "Dream job? 💼",
+    "Kuch naya try karna hai? 🚀"
+];
+
+function setDailyQuestion() {
+    let today = new Date().toDateString();
+    let stored = localStorage.getItem('sapna_daily_question');
+    if (stored && stored.includes(today)) {
+        document.getElementById('dailyQuestion').textContent = stored.split('|')[1];
+        return;
+    }
+    let question = dailyQuestions[Math.floor(Math.random() * dailyQuestions.length)];
+    document.getElementById('dailyQuestion').textContent = question;
+    localStorage.setItem('sapna_daily_question', today + '|' + question);
+}
+
+// ==================== NOTIFICATIONS ====================
+
+function showNotification(text) {
+    let existing = document.querySelector('.notification-bubble');
+    if (existing) existing.remove();
+    
+    let div = document.createElement('div');
+    div.className = 'notification-bubble';
+    div.textContent = text;
+    document.body.appendChild(div);
+    
+    setTimeout(() => {
+        div.style.opacity = '0';
+        div.style.transform = 'translateX(100%)';
+        setTimeout(() => div.remove(), 500);
+    }, 3500);
+}
+
+// ==================== CLEAR MEMORY ====================
+
+function clearMemory() {
+    if (confirm('Clear all memory data? This cannot be undone!')) {
+        localStorage.removeItem('sapna_user_memory');
+        userMemory = {
+            name: '',
+            favorite: '',
+            lastMessage: '',
+            mood: '😊',
+            startTime: Date.now(),
+            messageHistory: []
+        };
+        saveUserMemory();
+        showNotification('🧠 Memory cleared! Fresh start!');
+    }
+}
+
 // ==================== INIT ====================
 
+loadTheme();
 loadChat();
 renderPhotos();
+setDailyQuestion();
+updateGame();
+updateMemoryDisplay();
+
+// Update suggestions based on time
+function updateSuggestions() {
+    let hour = new Date().getHours();
+    let container = document.getElementById('suggestionContainer');
+    
+    let suggestions = [
+        '✨ Interesting',
+        '😔 Sad',
+        '😂 Joke',
+        '🤔 What\'s up?',
+        '🌸 About Sapna'
+    ];
+    
+    if (hour < 12) {
+        suggestions.push('🌅 Good Morning');
+    } else if (hour < 17) {
+        suggestions.push('🌤️ Good Afternoon');
+    } else if (hour < 21) {
+        suggestions.push('🌅 Good Evening');
+    } else {
+        suggestions.push('🌙 Good Night');
+    }
+    
+    if (document.body.classList.contains('light-mode')) {
+        suggestions.push('🌓 Dark Mode');
+    } else {
+        suggestions.push('🌓 Light Mode');
+    }
+    
+    container.innerHTML = suggestions.map(s => 
+        `<span class="suggestion-chip" onclick="quickSend('${s}')">${s}</span>`
+    ).join('');
+}
+
+updateSuggestions();
 
 // Close emoji picker on outside click
 document.addEventListener('click', function(e) {
@@ -494,6 +1202,10 @@ document.addEventListener('click', function(e) {
         emojiPicker.classList.remove('show');
     }
 });
+
+console.log('🌸 Meet Your Friend - Sapna is ready!');
+console.log('💕 Features: Advanced AI + Gamification + Photo Gallery + Memory System');
+console.log('🔥 Share your experience with friends!');
 </script>
 </body>
 </html>
